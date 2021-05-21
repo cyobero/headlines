@@ -5,6 +5,12 @@
 	</head>
 	<body>
 		<h1>Headlines</h1>
+		<div id="search">
+			<form>
+				<input type="text" name="publication" placeholder="search publication" />
+				<input type="submit" value="Submit" />
+			</form>
+		</div>
 		{% for article in articles %}
 		<b><a href="{{article.link}}">{{article.title}}</a></b> <br/>
 		<i>{{article.published}}</i> <br/>
