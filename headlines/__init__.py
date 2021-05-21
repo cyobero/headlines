@@ -16,7 +16,7 @@ RSS_FEEDS = {
 
 def get_weather(query):
     query = urllib.parse.quote(query)
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=758501f8c3d9c9c51884c5e7bee1e523'.format(query)
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=758501f8c3d9c9c51884c5e7bee1e523'.format(query)
     data = urllib.request.urlopen(url).read()
     parsed = json.loads(data)
     weather = None
