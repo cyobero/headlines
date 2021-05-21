@@ -13,10 +13,13 @@ RSS_FEEDS = {
     'iol': 'http://iol.co.za/cmlink/1.640'
 }
 
+DEFAULTS = {'publication': 'bbc', 'city': 'London, UK'}
+
 
 def get_weather(query):
     query = urllib.parse.quote(query)
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=758501f8c3d9c9c51884c5e7bee1e523'.format(query)
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=758501f8c3d9c9c51884c5e7bee1e523'.format(
+        query)
     data = urllib.request.urlopen(url).read()
     parsed = json.loads(data)
     weather = None
@@ -27,19 +30,29 @@ def get_weather(query):
     return weather
 
 
-@app.route('/')
-def get_news(publication="bbc"):
+def get_news(query):
     """
     Returns RSS feed for given publication.
     """
-    query = request.args.get("publication")
     if not query or query.lower() not in RSS_FEEDS:
-        publication = "bbc"
+        publication = DEFAULTS['publication']
     else:
         publication = query.lower()
     feed = feedparser.parse(RSS_FEEDS[publication])
-    weather = get_weather('Chicago, IL, USA')
-    return render_template("index.html", articles=feed['entries'], weather=weather)
+    return feed['entries']
+
+
+@app.route('/')
+def home():
+    publication = request.args.get('publication')
+    if not publication:
+        publication = DEFAULTS['publication']
+    articles = get_news(publication)
+    city = request.args.get('city')
+    if not city:
+        city = DEFAULTS['city']
+    weather = get_weather(city)
+    return render_template('index.html', articles=articles, weather=weather)
 
 
 if __name__ == "__main__":
