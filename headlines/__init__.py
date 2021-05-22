@@ -32,7 +32,7 @@ def get_rate(currency1, currency2):
     parsed = json.loads(all_currency).get('rates')
     currency1_rate = parsed.get(currency1.upper())
     currency2_rate = parsed.get(currency2.upper())
-    return currency2_rate/currency1_rate
+    return currency1_rate/currency2_rate
 
 
 def get_weather(query):
